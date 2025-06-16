@@ -1,0 +1,12 @@
+[?2004l
+--- Concurrent Merge Sort Benchmarking ---
+
+Benchmarking with 100000 elements:
+Sequential Merge Sort (Small) sorted 100000 elements in: 0.062346 seconds
+Concurrent Merge Sort (Small) sorted 100000 elements in: 0.069987 seconds
+
+Benchmarking with 1000000 elements:
+Sequential Merge Sort (Medium) sorted 1000000 elements in: 0.699621 seconds
+terminate called after throwing an instance of 'std::system_error'
+  what():  Resource temporarily unavailable
+[?2004h
