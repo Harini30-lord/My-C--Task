@@ -1,0 +1,31 @@
+--- Advanced Thread Pool Demonstration ---
+
+=== Priority Scheduling Demo ===
+Task 100: HIGH PRIORITY TASK (P=0) (Thread ID: 140213136242432)
+Task 103: ANOTHER HIGH PRIORITY TASK (P=0) (Thread ID: 140213127850752)
+Task 102: Medium Priority Task (P=1) (Thread ID: 140213119458048)
+Task 104: Another Low Priority Task (P=2) (Thread ID: 140213136242432)
+Task 101: Low Priority Task (P=2) (Thread ID: 140213111065344)
+
+--------------------------------
+
+=== Task Dependencies Demo ===
+Task 201: Waiting for Task A to complete...
+Task 203: Waiting for Task B to complete...
+Task 202: Task C (Independent, Low Priority) (Thread ID: 140213127850752)
+Task 200: Task A (Dependency Source) (Thread ID: 140213136242432)
+Task 201: Task B (Dependent on A) - Task A Completed! (Thread ID: 140213119458048)
+Task 203: Task D (Dependent on B) - Task B Completed! (Thread ID: 140213111065344)
+
+--------------------------------
+
+=== Error Propagation Demo ===
+Task 300: Attempting to throw exception...
+Task 300: Attempting to throw exception...
+Task 301: Task 301 (Will run) (Thread ID: 140213127850752)
+Caught expected exception from error_future_1: Error from Task 300
+Error Future 2: Succeeded as expected.
+
+--------------------------------
+
+--- All Demos Completed. Pool will shut down ---
