@@ -1,0 +1,14 @@
+[?2004l
+Finding root for P(x) = x^2 - 9
+Starting Newton-Raphson with guess x0 = 5
+Iteration 1: x = 3.4000000
+Iteration 2: x = 3.0235294
+Iteration 3: x = 3.0000916
+Iteration 4: x = 3.0000000
+Iteration 5: x = 3.0000000
+Success: Converged to a root.
+
+----------------------------------------
+Final root found: 3.0000000
+P(3.0000000) = 0.0000000
+[?2004h
