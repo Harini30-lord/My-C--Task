@@ -1,0 +1,18 @@
+[?2004l
+--- Expression Evaluator Basic Tests ---
+
+Expression: "1+2*3"
+Result: 7
+
+Expression: "(1+2)*3"
+Result: 9
+
+Expression: "10-4/2"
+Result: 8
+
+Expression: "10/0"
+Result: Error: Division by zero!
+0
+
+--- Tests Completed ---
+[?2004h
