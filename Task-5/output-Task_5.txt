@@ -1,0 +1,19 @@
+[?2004l
+--- Lock-Free Smart Pointer (Simplified) Demonstration ---
+
+=== Correctness (Single-Threaded) ===
+Ptr1 use_count: 1
+Ptr1 use_count: 2, Ptr2 use_count: 2
+Ptr1 use_count: 3, Ptr3 use_count: 3
+Ptr1 use_count: 1 (new obj), Others use_count: 2
+Ptr2 reset. Ptr3 use_count: 1
+After block, s_instance_count: 0
+--- Single-threaded correctness verified ---
+
+=== Benchmarking and Multi-threaded Stress Tests ===
+Running with 8 threads, 100000 iterations per thread.
+Total pointer copies/resets/deletions affecting shared pointer: Approx 8000
+Total pointer operations (copies/resets) on local pointers: Approx 1600000
+
+malloc(): unaligned tcache chunk detected
+[?2004h

@@ -1,0 +1,34 @@
+[?2004l
+=== Concurrent Multi-Queue Producer-Consumer with Work-Stealing ===
+
+--- Benchmark without Work Stealing (Work Stealing OFF) ---
+Threads: 4, Total Tasks: 2000
+Heavy Tasks per queue: 50 (Complexity: 20ms)
+Light Tasks: 1800 (Complexity: 1ms)
+Total tasks completed: 2000
+Execution time: 1.5011 seconds
+Throughput: 1332 tasks/sec
+----------------------------------------------------
+
+--- Benchmark with Work Stealing (Work Stealing ON) ---
+Threads: 4, Total Tasks: 2000
+Heavy Tasks per queue: 50 (Complexity: 20ms)
+Light Tasks: 1800 (Complexity: 1ms)
+Total tasks completed: 2000
+Execution time: 1.5009 seconds
+Throughput: 1332 tasks/sec
+----------------------------------------------------
+
+
+=== Aggressive Imbalance Test (Work Stealing Benefit) ===
+--- Initial Imbalance (No Stealing) ---
+
+^[[A    No Stealing Time: 10.1081 seconds (Throughput: 98 tasks/sec)
+----------------------------------------------------
+
+--- Initial Imbalance (With Stealing) ---
+With Stealing Time: 4.0028 seconds (Throughput: 249 tasks/sec)
+----------------------------------------------------
+
+=== All Demos Complete ===
+[?2004h
