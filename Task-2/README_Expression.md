@@ -1,11 +1,9 @@
-Of course. Here is a README.md file for the C++ expression evaluator code.
 
-This file explains the project's purpose, how the parsing logic works, how to compile and run the code, and what to expect from the output and its error handling.
 
-README.md File
+
 "C++ Mathematical Expression Evaluator":
 
-This project is a simple, command-line C++ program that can parse and evaluate basic mathematical expressions provided as a string. It is a demonstration of a Recursive Descent Parser, a common and elegant way to handle structured text like arithmetic formulas.
+ C++ program that can parse and evaluate basic mathematical expressions provided as a string. 
 
 \\\
 
