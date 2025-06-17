@@ -20,7 +20,7 @@ How it works: The thread pool's worker loop has a try...catch block. It catches 
 Handling Errors: Later, on the main thread, when you call .get() on the task's future, the original exception will be re-thrown. This allows you to handle errors from background threads cleanly and safely in a centralized location.
 
 \\\
-How he Output is Generated:
+How the Output is Generated:
 
 The output you see is a series of std::cout statements from the main function and the test functions it calls (print_message, task_with_exception). The std::this_thread::sleep_for() calls are used to simulate work and to make the order of execution clear. The output from the different demos will be interleaved, as all 4 threads are running in the background and picking up tasks as they become available according to their priority.
 
