@@ -1,6 +1,6 @@
 "C++ Thread Pool with Work-Stealing"
 
-This project is a C++ implementation of a high-performance, multi-threaded task processing system. It demonstrates the Producer-Consumer pattern using a Thread Pool where each thread has its own task queue.
+This program is a C++ implementation of a high-performance, multi-threaded task processing system. It demonstrates the Producer-Consumer pattern using a Thread Pool where each thread has its own task queue.
 
 The key feature of this project is the Work-Stealing mechanism, which is designed to improve performance by efficiently balancing the workload across all available threads.
 ///
