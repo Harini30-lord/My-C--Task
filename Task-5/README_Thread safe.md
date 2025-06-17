@@ -1,6 +1,6 @@
 "Thread-Safe Atomic Shared Pointer in C++:"
 \\\
-This project is a C++ implementation of a custom smart pointer, MyAtomicSharedPtr. It is designed to manage dynamic memory automatically and safely across multiple threads.
+This project is a C++ implementation of a  smart pointer, MyAtomicSharedPtr. It is manage dynamic memory automatically and safely across multiple threads.
 
 The core feature is its use of std::atomic for reference counting, which allows it to be thread-safe without needing explicit locks (like a mutex) for basic copy and destruction operations. The program demonstrates the correctness of this smart pointer in a single-threaded context and then stress-tests its performance against the standard library's std::shared_ptr in a multi-threaded benchmark.
 ///
