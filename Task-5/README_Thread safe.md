@@ -42,25 +42,7 @@ struct AtomicControlBlock {
     ~AtomicControlBlock() { delete data_ptr; }
 };
 
-Diagram: Shared Ownership
-All smart pointers pointing to the same object also point to the same control block.
 
-+-----------------------+      +-----------------------+      +-----------------------+
-| MyAtomicSharedPtr ptr1|      | MyAtomicSharedPtr ptr2|      | MyAtomicSharedPtr ptr3|
-+-----------------------+      +-----------------------+      +-----------------------+
-          |                              |                              |
-          +------------------------------+------------------------------+
-                                         |
-                              +--------------------------+
-                              |   AtomicControlBlock     |
-                              |--------------------------|
-                              | ref_count: std::atomic<3>|
-                              | data_ptr:  *T            |
-                              +--------------------------+
-                                         |
-                              +--------------------------+
-                              |   Managed Object (Data)  |
-                              +--------------------------+
 
    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -83,26 +65,13 @@ void acquire() {
     }
 }
 
-Diagram: ptr2 = ptr1;
 
-// Before: ptr1 exists, ref_count is 1.
-+------+      +----------------+      +---------+
-| ptr1 |----->| Control Block  |----->| MyObject|
-+------+      | ref_count: 1   |      +---------+
-              +----------------+
 
 // Action: ptr2 is created as a copy of ptr1. acquire() is called.
 // fetch_add(1) is executed on the ref_count.
 
 // After: Both point to the same Control Block, ref_count is 2.
-+------+
-| ptr1 |------+
-+------+      |
-              V
-+------+      +----------------+      +---------+
-| ptr2 |----->| Control Block  |----->| MyObject|
-+------+      | ref_count: 2   |      +---------+
-              +----------------+
+
 -----------------------------------------------------------------------------------------------
 release() - Relinquishing Ownership
 This is the most critical function. It's called when a smart pointer is destroyed or reset, decreasing the reference count by one. If the count reaches zero, it cleans up the memory.
@@ -126,28 +95,14 @@ void release() {
 --------------------------------------------------------------------------------------------------------------------
 Why std::memory_order_acq_rel? :This is crucial. It creates a memory barrier that prevents compiler/CPU reordering. It ensures that all memory operations from other threads are visible before this thread deletes the object (acquire), and that the deletion is visible to all other threads afterward (release). This prevents very subtle bugs in concurrent code.
 
-Diagram: ptr2 is destroyed
-
-// Before: ref_count is 2.
-+------+      +----------------+
-| ptr1 |----->| Control Block  |
-+------+      | ref_count: 2   |
-              +----------------+
-+------+      /
-| ptr2 |-----/
-+------+
 
 // Action: ptr2 goes out of scope. release() is called.
 // fetch_sub(1) is executed. It returns the old_count (2). 2 != 1, so no deletion.
 
 // After: ref_count is 1.
-+------+      +----------------+
-| ptr1 |----->| Control Block  |
-+------+      | ref_count: 1   |
-              +----------------+
-              (ptr2 is gone)
 
-Diagram: ptr1 is destroyed (Final Deletion)
+
+ ptr1 is destroyed (Final Deletion):
 
 // Action: ptr1 goes out of scope. release() is called.
 // fetch_sub(1) is executed. It returns the old_count (1).
