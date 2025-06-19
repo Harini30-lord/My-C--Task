@@ -1,6 +1,6 @@
  """"""""""  Lock-Free Thread-Safe Smart Pointer  """""""""""
 
-This README breaks down the thread-safe.cpp code to explain the problem it solves, how its atomic operations work, and how it produces its output.
+This README of the thread-safe code to explain the problem it solves, how its atomic operations work, and how it produces its output.
 //////////////////////////////////////////////////////////////////////
 1. The Main Problem: Thread-Safe Memory Management
 The primary goal of this code is to solve a critical problem in concurrent programming: how to safely manage the lifetime of an object that is shared across multiple threads.
