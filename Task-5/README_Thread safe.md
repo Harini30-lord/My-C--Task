@@ -1,7 +1,7 @@
  """"""""""  Lock-Free Thread-Safe Smart Pointer  """""""""""
 
 This README of the thread-safe code to explain the problem it solves, how its atomic operations work, and how it produces its output.
-//////////////////////////////////////////////////////////////////////
+
 1. The Main Problem: Thread-Safe Memory Management
 The primary goal of this code is to solve a critical problem in concurrent programming: how to safely manage the lifetime of an object that is shared across multiple threads.
 -------------------------------------------------------------------------------------------
@@ -22,9 +22,10 @@ The traditional solution is to protect the counter with a std::mutex.
 The Problem: While safe, this is slow. Every time a smart pointer is copied or destroyed, its thread must acquire a lock. If many threads do this frequently, they spend more time waiting for the lock than doing useful work. The lock becomes a bottleneck.
 
 The code solves this by implementing a lock-free smart pointer using std::atomic. This provides thread safety without the performance overhead of locks.
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-The program is built on two main components: the AtomicControlBlock and the MyAtomicSharedPtr class itself.
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\---------------------------------------------------------\
+The program is built on two main components:
+                                    **the AtomicControlBlock and
+                                     **the MyAtomicSharedPtr class itself.
 
 *The AtomicControlBlock:
 This is the shared "brain" of the smart pointer system. It's a small object allocated on the heap that holds the shared state.
