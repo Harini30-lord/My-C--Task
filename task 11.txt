@@ -1,0 +1,148 @@
+task 11 
+
+CODE :
+
+// ==============================
+// CUDA vs CPU Vector Addition
+// ==============================
+
+#include <iostream>  // Includes the standard input-output stream
+#include <cuda_runtime.h> // Includes CUDA runtime API for GPU operations
+#include <chrono>   // For measuring time (high-resolution clock)
+#include <cmath>     // For using fabs (floating-point absolute difference)
+#include <iomanip>    // Includes I/O manipulators (like std::fixed and std::setprecision)
+
+
+
+// CUDA Kernel: Vector Addition
+
+// Adds corresponding elements of arrays a and b, stores result in c
+__global__ void vectorAddCUDA(float *a, float *b, float *c, int n) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < n) c[i] = a[i] + b[i];
+}
+
+
+// CPU Function: Vector Addition
+// Sequentially adds elements of arrays a and b, stores result in c
+void vectorAddCPU(float *a, float *b, float *c, int n) {
+    for (int i = 0; i < n; i++) c[i] = a[i] + b[i];
+}
+
+
+// Function to Run Test and Compare GPU vs CPU
+void runTest(int N) {
+    float *h_a, *h_b, *h_c_cpu, *h_c_gpu;  // Host memory pointers
+    float *d_a, *d_b, *d_c;     // Device (GPU) memory pointers
+    size_t size = N * sizeof(float);    // Total size in bytes for the vectors
+
+    // Allocate memory on the host (CPU)
+    h_a = new float[N];
+    h_b = new float[N];
+    h_c_cpu = new float[N];
+    h_c_gpu = new float[N];
+
+    // Initialize input vectors with example values
+    for (int i = 0; i < N; i++) {
+        h_a[i] = 1.0f;
+        h_b[i] = 2.0f;
+    }
+
+    
+    // CPU Computation
+    auto start_cpu = std::chrono::high_resolution_clock::now();
+    vectorAddCPU(h_a, h_b, h_c_cpu, N);
+    auto end_cpu = std::chrono::high_resolution_clock::now();
+    float cpu_time = std::chrono::duration<float, std::milli>(end_cpu - start_cpu).count();
+
+  
+    // GPU Computation
+    // Allocate memory on the device (GPU)
+    cudaMalloc(&d_a, size);
+    cudaMalloc(&d_b, size);
+    cudaMalloc(&d_c, size);
+
+    // Copy input data from host to device
+    cudaMemcpy(d_a, h_a, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, h_b, size, cudaMemcpyHostToDevice);
+
+    // Define CUDA kernel configuration
+    int threadsPerBlock = 256;
+    int blocksPerGrid = (N + threadsPerBlock - 1) / threadsPerBlock;
+
+    // Launch CUDA kernel and measure time
+    auto start_gpu = std::chrono::high_resolution_clock::now();
+    vectorAddCUDA<<<blocksPerGrid, threadsPerBlock>>>(d_a, d_b, d_c, N);
+    cudaDeviceSynchronize();  // Ensure kernel execution is complete
+    auto end_gpu = std::chrono::high_resolution_clock::now();
+    float gpu_time = std::chrono::duration<float, std::milli>(end_gpu - start_gpu).count();
+
+    // Copy result from device to host
+    cudaMemcpy(h_c_gpu, d_c, size, cudaMemcpyDeviceToHost);
+
+    
+    // Verify Result Correctness
+    bool correct = true;
+    for (int i = 0; i < N; i++) {
+        if (fabs(h_c_cpu[i] - h_c_gpu[i]) > 1e-5) {
+            correct = false;
+            break;
+        }
+    }
+
+    
+    // Report Performance Results
+    float speedup = cpu_time / gpu_time;
+
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << "Vector Size: " << N
+              << " | Correct: " << (correct ? "PASS" : "FAIL")
+              << " | CPU Time: " << cpu_time << " ms"
+              << " | GPU Time: " << gpu_time << " ms"
+              << " | Speedup: " << speedup << "x" << std::endl;
+
+    // Free host memory
+    delete[] h_a;
+    delete[] h_b;
+    delete[] h_c_cpu;
+    delete[] h_c_gpu;
+
+    // Free device memory
+    cudaFree(d_a);
+    cudaFree(d_b);
+    cudaFree(d_c);
+}
+
+
+// Entry Point of the Program
+int main() {
+    // Different vector sizes for testing scalability
+    int sizes[] = {1000, 100000, 1000000, 10000000};
+
+    std::cout << "CUDA vs CPU Vector Addition Performance\n";
+    for (int i = 0; i < 4; i++) {
+        runTest(sizes[i]);
+    }
+
+    return 0;
+}
+
+
+OUTPUT : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
